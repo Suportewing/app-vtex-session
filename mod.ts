@@ -1,72 +1,80 @@
-import type { App, FnContext } from "@deco/deco";
-import { fetchSafe } from "apps/utils/fetch.ts";
 import { createHttpClient } from "apps/utils/http.ts";
-import { PreviewContainer } from "apps/utils/preview.tsx";
-import type { Secret } from "apps/website/loaders/secret.ts";
+import { removeDirtyCookies } from "apps/utils/normalize.ts";
+import workflow from "apps/workflows/mod.ts";
+import { fetchSafe } from "apps/vtex/utils/fetchVTEX.ts";
+import { SessionInterface } from "./utils/client.ts";
+import { Markdown } from "apps/decohub/components/Markdown.tsx";
+import {
+  type App as A,
+  type AppContext as AC,
+  type AppRuntime,
+  type ManifestOf,
+} from "@deco/deco";
 import manifest, { Manifest } from "./manifest.gen.ts";
-import { ClientInterfaceExample } from "./utils/client.ts";
+export type App = ReturnType<typeof VTEX_SESSION>;
+export type AppContext = AC<App>;
+export type AppManifest = ManifestOf<App>;
 
-export type AppContext = FnContext<State, Manifest>;
-
+/**@title VTEX Session */
 export interface Props {
   /**
-   * @title Account Name
-   * @description erploja2 etc
+   * @description VTEX Account name. For more info, read here: https://help.vtex.com/en/tutorial/o-que-e-account-name--i0mIGLcg3QyEy8OCicEoC.
    */
   account: string;
-
   /**
-   * @title API token
-   * @description The token for accessing your API
+   * @title Default Sales Channel
+   * @description (Use defaultSegment instead)
+   * @default 1
+   * @deprecated
    */
-  token?: Secret;
+  salesChannel?: string;
+  /**
+   * @description Use VTEX as backend platform
+   * @default vtex
+   * @hide true
+   */
+  platform: "vtex";
 }
-
-// Here we define the state of the app
-// You choose what to put in the state
-export interface State extends Omit<Props, "token"> {
-  api: ReturnType<typeof createHttpClient<ClientInterfaceExample>>;
-}
-
+export const color = 0xf71963;
 /**
- * @title App Template
- * @description This is an template of an app to be used as a reference.
- * @category Tools
- * @logo https://
+ * @title VTEX Session Init
+ * @description Vtex Session initialization
+ * @category Ecommmerce
+ * @logo https://raw.githubusercontent.com/deco-cx/apps/main/vtex/logo.png
  */
-export default function App(props: Props): App<Manifest, State> {
-  const { token, account: _account } = props;
-
-  const _stringToken = typeof token === "string" ? token : token?.get?.() ?? "";
-
-  const api = createHttpClient<ClientInterfaceExample>({
-    base: `https://api.github.com/users/guitavano`,
-    // headers: new Headers({ "Authorization": `Bearer ${stringToken}` }),
+export default function VTEX_SESSION({
+  account,
+  salesChannel,
+  ...props
+}: Props) {
+  const session = createHttpClient<SessionInterface>({
+    base: `https://${account}.vtexcommercestable.com.br/`,
+    processHeaders: removeDirtyCookies,
     fetcher: fetchSafe,
   });
 
-  // it is the state of the app, all data
-  // here will be available in the context of
-  // loaders, actions and workflows
-  const state = { ...props, api };
+  const state = {
+    ...props,
+    account,
+    salesChannel,
+    session,
+  };
 
-  return {
+  const app: A<Manifest, typeof state, [ReturnType<typeof workflow>]> = {
     state,
     manifest,
+    dependencies: [workflow({})],
   };
+  return app;
 }
-
-// It is important to use the same name as the default export of the app
-export const preview = () => {
+export const preview = async (props: AppRuntime) => {
+  const markdownContent = await Markdown(
+    new URL("./README.md", import.meta.url).href
+  );
   return {
-    Component: PreviewContainer,
     props: {
-      name: "App Template",
-      owner: "deco.cx",
-      description: "This is an template of an app to be used as a reference.",
-      logo: "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/1/0ac02239-61e6-4289-8a36-e78c0975bcc8",
-      images: [],
-      tabs: [],
+      ...props,
+      markdownContent,
     },
   };
 };

@@ -1,13 +1,8 @@
-import { GithubUser } from "./types.ts";
+import { Cep, Session } from "./types.ts";
 
-export interface ClientInterfaceExample {
-  "GET /users/:username": {
-    response: GithubUser;
-  };
-  "POST /users/:username": {
-    response: GithubUser;
-    body: {
-      filter: string;
-    };
+export interface SessionInterface {
+  "POST /api/sessions": {
+    response: Session;
+    body: Cep;
   };
 }
