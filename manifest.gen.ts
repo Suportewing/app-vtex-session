@@ -2,21 +2,11 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $$$$$$$$$0 from "./actions/myAction.ts";
-import * as $$$$$$$$$1 from "./actions/sessionInit.ts";
-import * as $$$0 from "./loaders/myLoader.ts";
-import * as $$$$$$0 from "./sections/mySection.tsx";
+import * as $$$$$$$$$0 from "./actions/sessionInit.ts";
 
 const manifest = {
-  "loaders": {
-    "app-vtex-session/loaders/myLoader.ts": $$$0,
-  },
-  "sections": {
-    "app-vtex-session/sections/mySection.tsx": $$$$$$0,
-  },
   "actions": {
-    "app-vtex-session/actions/myAction.ts": $$$$$$$$$0,
-    "app-vtex-session/actions/sessionInit.ts": $$$$$$$$$1,
+    "app-vtex-session/actions/sessionInit.ts": $$$$$$$$$0,
   },
   "name": "app-vtex-session",
   "baseUrl": import.meta.url,
