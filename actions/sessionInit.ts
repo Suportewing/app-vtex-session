@@ -27,7 +27,7 @@ const CepSessionInit = async (
       body: data,
       headers: {
         "Content-Type": "application/json",
-        Cookie: `vtex_is_session=${vtex_session}; path=/vtex_segment=${vtex_segment}`,
+        Cookie: `vtex_session=${vtex_session}; vtex_segment=${vtex_segment}`,
       },
     }
   );
