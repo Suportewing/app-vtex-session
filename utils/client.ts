@@ -6,3 +6,9 @@ export interface SessionInterface {
     body: Cep;
   };
 }
+
+export interface SessionInterfaceGet {
+  "GET /api/sessions?items=public.postalCode": {
+    response: Session;
+  };
+}
