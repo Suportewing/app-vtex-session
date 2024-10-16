@@ -19,6 +19,7 @@ const CepSessionInit = async (
   const vtex_session = cookies["vtex_is_session"];
   const vtex_segment = cookies["vtex_segment"];
 
+  console.log("Iniciando a chamada GET para a sessão...");
   console.log(
     "Cookies:",
     cookies,
@@ -31,15 +32,14 @@ const CepSessionInit = async (
   // Realizando o GET para verificar o postalCode e fazer log
   const responseGet = await ctx.session[
     "GET /api/sessions?items=public.postalCode"
-  ](
-    // Sem body no GET
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `vtex_session=${vtex_session}; vtex_segment=${vtex_segment}`,
-      },
-    }
-  );
+  ]({
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `vtex_session=${vtex_session}; vtex_segment=${vtex_segment}`,
+    },
+  });
+
+  console.log("Resposta bruta do GET:", responseGet);
 
   if (!responseGet.ok) {
     console.error("Erro ao obter a sessão:", responseGet.status);
@@ -47,9 +47,11 @@ const CepSessionInit = async (
   }
 
   const resultGet = await responseGet.json();
-  console.log("Resultado GET:", resultGet);
+  console.log("Resultado GET (JSON):", resultGet);
 
   // Realizando o POST para definir o postalCode
+  console.log("Iniciando a chamada POST para a sessão...");
+
   const responsePost = await ctx.session["POST /api/sessions"](
     {},
     {
@@ -61,13 +63,15 @@ const CepSessionInit = async (
     }
   );
 
+  console.log("Resposta bruta do POST:", responsePost);
+
   if (!responsePost.ok) {
     console.error("Erro ao definir a sessão:", responsePost.status);
     throw new Error(`Failed to set postal code: ${responsePost.statusText}`);
   }
 
   const resultPost = await responsePost.json();
-  console.log("Resultado POST:", resultPost);
+  console.log("Resultado POST (JSON):", resultPost);
 
   return resultPost;
 };
