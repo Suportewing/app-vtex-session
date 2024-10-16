@@ -19,7 +19,7 @@ const CepSessionInit = async (
   const vtex_session = cookies["vtex_is_session"];
   const vtex_segment = cookies["vtex_segment"];
 
-  console.log(cookies, vtex_session, vtex_segment);
+  //console.log(cookies, vtex_session, vtex_segment);
 
   const response = await ctx.getSession[
     "GET /api/sessions?items=public.postalCode"
