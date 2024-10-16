@@ -5,10 +5,11 @@ export interface SessionInterface {
     response: Session;
     body: Cep;
   };
+  "GET /api/sessions?items=public.postalCode": {
+    response: {
+      public: {
+        postalCode: string;
+      };
+    };
+  };
 }
-
-// export interface SessionInterfaceGet {
-//   "GET /api/sessions?items=public.postalCode": {
-//     response: Session;
-//   };
-// }

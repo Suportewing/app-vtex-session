@@ -53,12 +53,6 @@ export default function VTEX_SESSION({
     fetcher: fetchSafe,
   });
 
-  // const getSession = createHttpClient<SessionInterfaceGet>({
-  //   base: `https://${account}.vtexcommercestable.com.br/`,
-  //   processHeaders: removeDirtyCookies,
-  //   fetcher: fetchSafe,
-  // });
-
   const state = {
     ...props,
     account,
