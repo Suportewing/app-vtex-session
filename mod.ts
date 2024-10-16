@@ -2,7 +2,7 @@ import { createHttpClient } from "apps/utils/http.ts";
 import { removeDirtyCookies } from "apps/utils/normalize.ts";
 import workflow from "apps/workflows/mod.ts";
 import { fetchSafe } from "apps/vtex/utils/fetchVTEX.ts";
-import { SessionInterface, SessionInterfaceGet } from "./utils/client.ts";
+import { SessionInterface } from "./utils/client.ts";
 import { Markdown } from "apps/decohub/components/Markdown.tsx";
 import {
   type App as A,
@@ -53,18 +53,17 @@ export default function VTEX_SESSION({
     fetcher: fetchSafe,
   });
 
-  const getSession = createHttpClient<SessionInterfaceGet>({
-    base: `https://${account}.vtexcommercestable.com.br/`,
-    processHeaders: removeDirtyCookies,
-    fetcher: fetchSafe,
-  });
+  // const getSession = createHttpClient<SessionInterfaceGet>({
+  //   base: `https://${account}.vtexcommercestable.com.br/`,
+  //   processHeaders: removeDirtyCookies,
+  //   fetcher: fetchSafe,
+  // });
 
   const state = {
     ...props,
     account,
     salesChannel,
     session,
-    getSession,
   };
 
   const app: A<Manifest, typeof state, [ReturnType<typeof workflow>]> = {

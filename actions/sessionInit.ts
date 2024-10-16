@@ -21,17 +21,17 @@ const CepSessionInit = async (
 
   console.log(cookies, vtex_session, vtex_segment);
 
-  const responseGet = await ctx.getSession[
-    "GET /api/sessions?items=public.postalCode"
-  ](
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `vtex_session=${vtex_session}; vtex_segment=${vtex_segment}`,
-      },
-    }
-  );
+  // const responseGet = await ctx.getSession[
+  //   "GET /api/sessions?items=public.postalCode"
+  // ](
+  //   {},
+  //   {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Cookie: `vtex_session=${vtex_session}; vtex_segment=${vtex_segment}`,
+  //     },
+  //   }
+  // );
 
   const response = await ctx.session["POST /api/sessions"](
     {},
@@ -44,11 +44,11 @@ const CepSessionInit = async (
     }
   );
 
-  const resultGet = await responseGet.json();
+  // const resultGet = await responseGet.json();
 
   const result = await response.json();
 
-  console.log("Resultado:", resultGet);
+  // console.log("Resultado:", resultGet);
 
   return result;
 };

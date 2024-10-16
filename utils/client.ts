@@ -7,8 +7,8 @@ export interface SessionInterface {
   };
 }
 
-export interface SessionInterfaceGet {
-  "GET /api/sessions?items=public.postalCode": {
-    response: Session;
-  };
-}
+// export interface SessionInterfaceGet {
+//   "GET /api/sessions?items=public.postalCode": {
+//     response: Session;
+//   };
+// }
