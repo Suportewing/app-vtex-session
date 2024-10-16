@@ -46,7 +46,7 @@ const CepSessionInit = async (
 
   const result = await response.json();
 
-  console.log(result);
+  console.log("Resultado:", result);
 
   return result;
 };
