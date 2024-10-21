@@ -65,6 +65,7 @@ export default function VTEX_SESSION({
     manifest,
     dependencies: [workflow({})],
   };
+  console.log('teste');
   return app;
 }
 export const preview = async (props: AppRuntime) => {
