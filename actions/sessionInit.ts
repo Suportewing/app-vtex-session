@@ -20,14 +20,14 @@ const CepSessionInit = async (
   const vtex_segment = cookies["vtex_segment"];
 
   console.log("Iniciando a chamada GET para a sessão...");
-  console.log(
+  /*console.log(
     "Cookies:",
     cookies,
     "Session:",
     vtex_session,
     "Segment:",
     vtex_segment
-  );
+  );*/
 
   // Realizando o GET para verificar o postalCode e fazer log
   const responseGet = await ctx.session[
