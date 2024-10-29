@@ -27,7 +27,9 @@ const CepSessionInit = async (
     }
   );
 
-  console.log(responseViaCep);
+  const resultViaCep = await responseViaCep.json();
+
+  console.log(resultViaCep);
 
   const responsePost = await ctx.session["POST /api/sessions"](
     {},
