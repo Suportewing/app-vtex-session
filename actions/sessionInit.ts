@@ -15,28 +15,19 @@ const CepSessionInit = async (
   ctx: AppContext
 ): Promise<Session> => {
   const { data } = props;
-  const cookies = getCookies(_req.headers);
-  const vtex_segment = cookies["vtex_segment"];
 
-  // console.log("App context", ctx);
-  // console.log("Request", _req);
-  // console.log("Props", props);
+  const responseViaCep = await ctx.viaCep["GET /ws/:cep/json"](
+    {
+      cep: data.public.postalCode.value,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-  // const responseGet = await ctx.session[
-  //   "GET /api/sessions?items=public.postalCode"
-  // ]({
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  // });
-
-  // if (!responseGet.ok) {
-  //   console.error("Erro ao obter a sessão:", responseGet.status);
-  //   throw new Error(`Failed to fetch postal code: ${responseGet.statusText}`);
-  // }
-
-  // const resultGet = await responseGet.json();
-  // console.log("Resultado GET (JSON):", resultGet);
+  console.log(responseViaCep);
 
   const responsePost = await ctx.session["POST /api/sessions"](
     {},
@@ -49,7 +40,6 @@ const CepSessionInit = async (
   );
 
   const resultPost = await responsePost.json();
-  console.log("Resultado POST (JSON):", resultPost);
 
   return resultPost;
 };
