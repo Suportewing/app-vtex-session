@@ -13,7 +13,7 @@ const CepSessionInit = async (
   props: Props,
   _req: Request,
   ctx: AppContext
-): Promise<Session> => {
+): Promise<Session | null> => {
   const { data } = props;
 
   const responseViaCep = await ctx.viaCep["GET /ws/:cep/json"](
@@ -29,21 +29,26 @@ const CepSessionInit = async (
 
   const resultViaCep = await responseViaCep.json();
 
-  console.log(resultViaCep);
+  if (
+    (resultViaCep && resultViaCep.localidade === "Cascavel") ||
+    resultViaCep.localidade === "Curitiba"
+  ) {
+    const responsePost = await ctx.session["POST /api/sessions"](
+      {},
+      {
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  const responsePost = await ctx.session["POST /api/sessions"](
-    {},
-    {
-      body: data,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+    const resultPost = await responsePost.json();
 
-  const resultPost = await responsePost.json();
+    return resultPost;
+  }
 
-  return resultPost;
+  return null;
 };
 
 export default CepSessionInit;
