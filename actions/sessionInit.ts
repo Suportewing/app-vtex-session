@@ -28,7 +28,7 @@ const CepSessionInit = async (
 ): Promise<Session | null> => {
   const { data } = props;
 
-  if (isValidCep(data.postalCode.value)) {
+  if (isValidCep(data.public.postalCode.value)) {
     const responsePost = await ctx.session["POST /api/sessions"](
       {},
       {
