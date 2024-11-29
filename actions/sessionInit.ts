@@ -12,17 +12,20 @@ const CepSessionInit = async (
 ): Promise<Session | null> => {
   const { data } = props;
 
-  const responseViaCep = await ctx.viaCep["GET /ws/:cep/json"]({
-    cep: data.public.postalCode.value,
-  });
+  // const responseViaCep = await ctx.viaCep["GET /ws/:cep/json"]({
+  //   cep: data.public.postalCode.value,
+  // });
 
-  const resultViaCep = await responseViaCep.json();
+  // const resultViaCep = await responseViaCep.json();
 
-  if (
-    (resultViaCep && resultViaCep.localidade === "Cascavel") ||
-    resultViaCep.localidade === "Curitiba"
-  ) {
-    const responsePost = await ctx.session["POST /api/sessions"](
+  // if (
+  //   (resultViaCep && resultViaCep.localidade === "Cascavel") ||
+  //   resultViaCep.localidade === "Curitiba"
+  // ) {
+   
+  // }
+
+ const responsePost = await ctx.session["POST /api/sessions"](
       {},
       {
         body: data,
@@ -35,9 +38,8 @@ const CepSessionInit = async (
     const resultPost = await responsePost.json();
 
     return resultPost;
-  }
 
-  return null;
+  //return null;
 };
 
 export default CepSessionInit;
