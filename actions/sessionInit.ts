@@ -11,6 +11,8 @@ const isValidCep = (cep: string): boolean => {
   const cascavelMin = 85800001;
   const cascavelMax = 85824999;
 
+  console.log(cep);
+
   const cepInt = parseInt(cep, 10);
 
   return (
