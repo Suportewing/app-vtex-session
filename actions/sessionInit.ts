@@ -5,22 +5,9 @@ interface Props {
   data: Cep;
 }
 
-const isValidCep = (cep: string): boolean => {
-  const curitibaMin = 80000000;
-  const curitibaMax = 83800999;
-  const cascavelMin = 85800001;
-  const cascavelMax = 85824999;
-
-  console.log(cep);
-
-  const cepInt = parseInt(cep, 10);
-
-  return (
-    (cepInt >= curitibaMin && cepInt <= curitibaMax) ||
-    (cepInt >= cascavelMin && cepInt <= cascavelMax)
-  );
-};
-
+/**
+ * @title This name will appear on the admin
+ */
 const CepSessionInit = async (
   props: Props,
   _req: Request,
@@ -28,7 +15,16 @@ const CepSessionInit = async (
 ): Promise<Session | null> => {
   const { data } = props;
 
-  if (isValidCep(data.public.postalCode.value)) {
+  const responseViaCep = await ctx.viaCep["GET /ws/:cep/json"]({
+    cep: data.public.postalCode.value,
+  });
+
+  const resultViaCep = await responseViaCep.json();
+
+  if (
+    (resultViaCep && resultViaCep.localidade === "Cascavel") ||
+    resultViaCep.localidade === "Curitiba"
+  ) {
     const responsePost = await ctx.session["POST /api/sessions"](
       {},
       {
@@ -40,6 +36,7 @@ const CepSessionInit = async (
     );
 
     const resultPost = await responsePost.json();
+
     return resultPost;
   }
 
