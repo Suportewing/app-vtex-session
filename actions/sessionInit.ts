@@ -21,6 +21,8 @@ const CepSessionInit = async (
 
   const resultViaCep = await responseViaCep.json();
 
+  console.log(resultViaCep)
+
   if (
     (resultViaCep && resultViaCep.localidade === "Cascavel") ||
     resultViaCep.localidade === "Curitiba"
